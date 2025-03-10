@@ -8,6 +8,7 @@
   transition: all 0.3s;
   border-bottom: 3px solid #1677ff;
   border-right: 3px solid #1677ff;
+  position: relative;
 
   &.charging {
     border-bottom-color: #52c41a;
@@ -28,6 +29,12 @@
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .actions {
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 
   .record-header {

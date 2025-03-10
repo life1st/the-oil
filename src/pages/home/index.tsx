@@ -3,6 +3,8 @@ import ConsumptionItem from '@/components/consumption-item'
 import EnergyRecordItem from '@/components/energy-record-item'
 import FloatButton from '@/components/float-button'
 import { useNavigate } from 'react-router-dom'
+import useRecordStore from '@/store/recordStore'
+import StatisticsCard from '@/components/StatisticsCard'
 import './style.scss'
 
 const mockConsumptionData = [
@@ -38,15 +40,20 @@ const mockEnergyData = [
 ]
 
 const Home: FC = () => {
+  const { recordList } = useRecordStore()
   const navigate = useNavigate()
   const data = useMemo(() => {
-    return mockConsumptionData.map((data) => ({ type: 'consumption', data })).concat(mockEnergyData.map((data) => ({ type: 'energy', data }))).sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+    // return mockConsumptionData.map((data) => ({ type: 'consumption', data })).concat(mockEnergyData.map((data) => ({ type: 'energy', data }))).sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+    return recordList.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((data) => ({ type: 'energy', data }))
   }, [
     mockConsumptionData,
-    mockEnergyData
+    mockEnergyData,
+    recordList,
   ])
+  console.log(recordList)
   return (
     <div className="home-container">
+      <StatisticsCard />
       <section className="section">
         <h2>补能统计</h2>
         <div className="energy-list">

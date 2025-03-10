@@ -1,4 +1,4 @@
-export type EnergyType = 'charging' | 'refueling'
+import { EnergyType } from '@/utils/consts'
 
 export interface EnergyRecordItemProps {
   type?: EnergyType

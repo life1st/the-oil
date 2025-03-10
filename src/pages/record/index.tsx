@@ -1,27 +1,43 @@
-import { FC, useState, useEffect } from 'react'
+import { FC, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import dayjs from 'dayjs'
 import { LeftOutline } from 'antd-mobile-icons'
 import { Selector, Input, Button } from 'antd-mobile'
+import CalendarPicker from './calendar-picker'
+import useRecordStore from '@/store/recordStore'
+import type { EnergyType } from '@/utils/types'
 import './style.scss'
 
 const Record: FC = () => {
   const navigate = useNavigate()
-  const [data, setData] = useState({
-    type: '2',
+  const [data, setData] = useState<{
+    type: EnergyType;
+    oil: number;
+    electric: number;
+    cost: number;
+    kilometerOfDisplay: number;
+    date: string;
+  }>({
+    type: 'charging',
     oil: 0,
     electric: 0,
     cost: 0,
     kilometerOfDisplay: 0,
+    date: dayjs(Date.now()).format('YYYY.MM.DD'),
   })
-
-  useEffect(() => {
-    console.log(data)
-  }, [data])
+  const { setRecordData } = useRecordStore();
 
   const updateItem = (item: any, value: any) => {
-    console.log(item, value)
-    // const 
-    setData({ ...data, [item.key]: value })
+    setData({
+      ...data,
+      [item.key]: value,
+    });
+  }
+
+  const handleSubmit = () => {
+    setRecordData(data)
+    navigate(-1);
+    console.log(setRecordData, data, 'submit')
   }
 
   const formData = [
@@ -29,44 +45,49 @@ const Record: FC = () => {
       key: 'type',
       label: '类型：',
       value: data.type,
-      onChange: (value: string) => setData({ ...data, type: value }),
       dataType: 'select',
       data: {
         options: [
-            { label: '加油', value: '1' },
-            { label: '充电', value: '2' },
+            { label: '加油', value: 'refueling' },
+            { label: '充电', value: 'charging' },
         ],
       }
     },
-    data.type === '1' && {
+    data.type === 'refueling' && {
       key: 'oil',
       label: '油量：',
       value: data.oil,
-      onChange: (value: number) => setData({ ...data, oil: value }),
       dataType: 'number',
+      unit: '升'
     },
-    data.type === '2' && {
+    data.type === 'charging' && {
       key: 'electric',
       label: '电量：',
       value: data.electric,
-      onChange: (value: number) => setData({ ...data, electric: value }),
       dataType: 'number',
+      unit: '度'
     },
     {
       key: 'cost',
       label: '费用：',
       value: data.cost,
-      onChange: (value: number) => setData({ ...data, cost: value }),
       dataType: 'number',
+      unit: '元（CNY）'
     },
     {
       key: 'kilometerOfDisplay',
       label: '表显里程：',
       value: data.kilometerOfDisplay,
-      onChange: (value: number) => setData({ ...data, kilometerOfDisplay: value }),
       dataType: 'number',
+      unit: 'Km'
+    },
+    {
+      key: 'date',
+      label: '时间',
+      value: data.date,
+      dataType: 'date',
     }
-  ].filter(Boolean)
+  ].filter(Boolean);
 
   return (
     <div className="record-container">
@@ -77,39 +98,40 @@ const Record: FC = () => {
         <h1>新增记录</h1>
       </div>
       <div className="record-content">
-        {/* 表单内容待实现 */}
         <div className="record-form">
             {formData.map((item) => (
-                <div className="record-form-item">
+                <div className="record-form-item" key={item.key}>
                     <div className="record-form-item-label">{item.label}</div>
                     <div className="record-form-item-input">
-                        {item.dataType === 'select' ? (
+                        { item.dataType === 'select' ? (
                             <Selector
                                 options={item.data.options}
                                 defaultValue={[item.value]}
                                 onChange={(array) => updateItem(item, array[0])}
                             />
-                        ) : null}
-                        {
-                            item.dataType === 'number' ? (
-                                <Input
-                                    onClick={(e) => {
-                                        e.target.select?.()
-                                    }}
-                                    type="number"
-                                    value={item.value}
-                                    onChange={(value) => updateItem(item, value)}
-                                />
-                            ) : null
-                        }
+                        ) : null }
+                        { item.dataType === 'number' ? (
+                            <Input
+                                onClick={(e) => {
+                                    e.target.select?.();
+                                }}
+                                type="number"
+                                value={item.value}
+                                onChange={(value) => updateItem(item, value)}
+                            />
+                        ) : null }
+                        { item.dataType === 'date' ? (
+                            <CalendarPicker onChange={(value) => updateItem(item, value)} />
+                        ) : null }
+                        <p className="record-form-item-unit">{item.unit}</p>
                     </div>
                 </div>
             ))}
         </div>
-        <Button type='submit' color='primary' className='record-form-submit'>提交</Button>
+        <Button type='submit' color='primary' className='record-form-submit' onClick={handleSubmit}>提交</Button>
       </div>
     </div>
   )
 }
 
-export default Record 
+export default Record; 

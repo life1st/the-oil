@@ -49,8 +49,18 @@
         justify-content: space-between;
         height: 40px;
         padding-left: 12px;
+        position: relative;
         &:nth-child(2n + 1) {
           // background-color: #797979;
+        }
+        .record-form-item-input {
+          width: 70%;
+          border-bottom: 1px solid #eee;
+        }
+        .record-form-item-unit {
+          position: absolute;
+          right: 12px;
+          top: 0;
         }
     }
   }
