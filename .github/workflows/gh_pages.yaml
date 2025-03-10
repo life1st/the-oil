@@ -1,0 +1,47 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: deploy to ghpages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+
+    steps:
+    - uses: actions/checkout@master
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - run: pnpm i && pnpm build
+      shell: bash
+    - run: mv ./dist/* ./
+      shell: bash
+    - run: rm -rf ./node_modules
+      shell: bash
+    - run: rm -rf ./src
+      shell: bash
+    - run: echo "ttm.life1st.me" > CNAME
+      shell: bash
+    - run: git add .
+      shell: bash
+    - run: git config --global user.email "deployer@life1st.me"
+      shell: bash
+    - run: git config --global user.name "deployer"
+      shell: bash
+    - run: git commit -m 'deploy files'
+      shell: bash
+    - run: git push origin HEAD:gh-pages --force
+      shell: bash

@@ -3,10 +3,12 @@ import { persist } from 'zustand/middleware'
 
 interface RecordState {
   recordList: Record[];
-  setRecordData: (key: string, value: any) => void;
+  setRecordData: (data: Record) => void;
+  removeRecordById: (id: number) => void;
 };
 
 interface Record {
+  id: number;
   type: String,
   oil: number,
   electric: number,
@@ -15,7 +17,7 @@ interface Record {
   date: number; // ts
 }
 
-const useRecordStore = create<RecordState>(
+const useRecordStore = create<RecordState>()(
   persist(
     (set) => ({
       recordList: [],
