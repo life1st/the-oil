@@ -1,8 +1,8 @@
 import { FC } from 'react'
+import { useNavigate } from 'react-router-dom'
 import dayjs from 'dayjs'
-import { Modal, ConfigProvider } from 'antd-mobile'
+import { ConfigProvider } from 'antd-mobile'
 import { EditSFill } from 'antd-mobile-icons'
-import useRecordStore from '@/store/recordStore'
 import type { EnergyRecordItemProps } from './types'
 import type { EnergyType } from '@/utils/types'
 import './style.scss'
@@ -18,6 +18,7 @@ const EnergyUnit: Record<EnergyType, string> = {
 }
 
 const EnergyRecordItem: FC<EnergyRecordItemProps> = (props) => {
+  const navi = useNavigate()
   const {
     id,
     type = 'charging',
@@ -30,22 +31,15 @@ const EnergyRecordItem: FC<EnergyRecordItemProps> = (props) => {
   } = props
   const amount = electric || oil
 
-  const { removeRecordById } = useRecordStore()
-
-  const openEditModal = async () => {
-    const isConfirm = await Modal.confirm({
-      content: '删除这条数据？'
-    })
-    if (isConfirm) {
-      removeRecordById(id)
-    }
+  const goEdit = () => {
+    navi(`/record/${id}`)
   }
   
   return (
     <ConfigProvider>
       <div className={`energy-record-item ${type}`} onClick={onClick}>
         <div className="actions">
-          <EditSFill onClick={openEditModal} />
+          <EditSFill onClick={goEdit} />
         </div>
         <div className="record-header">
           <span className="energy-type">{EnergyTypeLabel[type]}</span>

@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
 import { LeftOutline } from 'antd-mobile-icons'
 import { Selector, Input, Button } from 'antd-mobile'
@@ -10,6 +10,7 @@ import './style.scss'
 
 const Record: FC = () => {
   const navigate = useNavigate()
+  const params = useParams()
   const [data, setData] = useState<{
     type: EnergyType;
     oil: number;
@@ -25,7 +26,7 @@ const Record: FC = () => {
     kilometerOfDisplay: 0,
     date: dayjs(Date.now()).format('YYYY.MM.DD'),
   })
-  const { setRecordData } = useRecordStore();
+  const { setRecordData, removeRecordById } = useRecordStore();
 
   const updateItem = (item: any, value: any) => {
     setData({
@@ -34,6 +35,11 @@ const Record: FC = () => {
     });
   }
 
+  const handleDelete = () => {
+    removeRecordById(params.id)
+    navigate(-1)
+  }
+  
   const handleSubmit = () => {
     setRecordData(data)
     navigate(-1);
@@ -128,6 +134,9 @@ const Record: FC = () => {
                 </div>
             ))}
         </div>
+        {params.id && (
+          <Button onClick={handleDelete}>删除</Button>
+        )}
         <Button type='submit' color='primary' className='record-form-submit' onClick={handleSubmit}>提交</Button>
       </div>
     </div>

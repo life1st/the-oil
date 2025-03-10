@@ -25,7 +25,10 @@ const useRecordStore = create<RecordState>()(
         ...data,
         id: Date.now()
       }] })),
-      removeRecordById: (id: number) => set((state) => ({recordList: state.recordList.filter(r => r.id !== id)}))
+      removeRecordById: (id: number) => set((state) => {
+        const list = state.recordList.filter(r => r.id !== Number(id))
+        set({recordList: list})
+      })
     }),
     {
       name: 'record-store',

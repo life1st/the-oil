@@ -15,6 +15,14 @@ const router = createBrowserRouter([
     )
   },
   {
+    path: '/record/:id',
+    element: (
+      <Suspense fallback={<Skeleton loading active rows={4} />}>
+        <Record />
+      </Suspense>
+    )
+  },
+  {
     path: '/record',
     element: (
       <Suspense fallback={<Skeleton loading active rows={4} />}>
