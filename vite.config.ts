@@ -13,5 +13,6 @@ export default defineConfig({
     alias: [
       { find: '@', replacement: '/src' }
     ]
-  }
+  },
+  base: '/the-oil/'
 })
