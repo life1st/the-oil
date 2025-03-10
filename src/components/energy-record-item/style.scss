@@ -1,0 +1,94 @@
+.energy-record-item {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: all 0.3s;
+  border-left: 4px solid #1677ff;
+
+  &.charging {
+    border-left-color: #52c41a;
+    
+    .energy-type {
+      color: #52c41a;
+    }
+  }
+
+  &.refueling {
+    border-left-color: #1677ff;
+    
+    .energy-type {
+      color: #1677ff;
+    }
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .record-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+
+    .energy-type {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .record-date {
+      color: #666;
+      font-size: 14px;
+    }
+  }
+
+  .record-details {
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .label {
+        color: #666;
+      }
+
+      .value {
+        color: #333;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+// 暗黑模式
+@media (prefers-color-scheme: dark) {
+  .energy-record-item {
+    background: #1a1a1a;
+    
+    .record-header {
+      .record-date {
+        color: #999;
+      }
+    }
+
+    .record-details {
+      .detail-row {
+        .label {
+          color: #999;
+        }
+
+        .value {
+          color: #e6e6e6;
+        }
+      }
+    }
+  }
+} 

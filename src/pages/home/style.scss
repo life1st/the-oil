@@ -1,0 +1,33 @@
+.home-container {
+  padding: 20px;
+  
+  .section {
+    margin-bottom: 32px;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    h2 {
+      font-size: 20px;
+      color: #333;
+      margin-bottom: 16px;
+    }
+  }
+
+  .energy-list,
+  .consumption-list {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .home-container {
+    .section {
+      h2 {
+        color: #e6e6e6;
+      }
+    }
+  }
+} 
