@@ -6,11 +6,12 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   cursor: pointer;
   transition: all 0.3s;
-  border-left: 4px solid #1677ff;
+  border-bottom: 3px solid #1677ff;
+  border-right: 3px solid #1677ff;
 
   &.charging {
-    border-left-color: #52c41a;
-    
+    border-bottom-color: #52c41a;
+    border-right-color: #52c41a;
     .energy-type {
       color: #52c41a;
     }

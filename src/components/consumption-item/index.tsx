@@ -12,7 +12,7 @@ const ConsumptionItem: FC<ConsumptionItemProps> = ({
 }) => {
   return (
     <div className="consumption-item" onClick={onClick}>
-      <div className="consumption-date">{date}</div>
+      {/* <div className="consumption-date">{date}</div> */}
       <div className="consumption-details">
         <div className="detail-row">
           <p className="label">油耗：</p>

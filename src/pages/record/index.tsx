@@ -93,6 +93,9 @@ const Record: FC = () => {
                         {
                             item.dataType === 'number' ? (
                                 <Input
+                                    onClick={(e) => {
+                                        e.target.select?.()
+                                    }}
                                     type="number"
                                     value={item.value}
                                     onChange={(value) => updateItem(item, value)}

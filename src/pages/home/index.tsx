@@ -48,7 +48,7 @@ const Home: FC = () => {
   return (
     <div className="home-container">
       <section className="section">
-        <h2>补能记录</h2>
+        <h2>补能统计</h2>
         <div className="energy-list">
           {data.map(({ type, data }, index) => {
             if (type === 'consumption') {
