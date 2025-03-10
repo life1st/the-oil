@@ -9,6 +9,9 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: write
+
 jobs:
   build:
 
@@ -19,22 +22,20 @@ jobs:
         node-version: [22.x]
 
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
 
-    - run: pnpm i && pnpm build
+    - run: corepack enable pnpm && pnpm i && pnpm build
+      shell: bash
+    - run: rm -rf ./node_modules && rm -rf ./src
       shell: bash
     - run: mv ./dist/* ./
       shell: bash
-    - run: rm -rf ./node_modules
-      shell: bash
-    - run: rm -rf ./src
-      shell: bash
-    - run: echo "ttm.life1st.me" > CNAME
-      shell: bash
+    # - run: echo "mileage.life1st.me" > CNAME
+    #   shell: bash
     - run: git add .
       shell: bash
     - run: git config --global user.email "deployer@life1st.me"
