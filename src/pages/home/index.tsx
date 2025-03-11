@@ -5,7 +5,7 @@ import ConsumptionItem from '@/components/consumption-item'
 import EnergyRecordItem from '@/components/energy-record-item'
 import FloatButton from '@/components/float-button'
 import useRecordStore from '@/store/recordStore'
-import StatisticsCard from '@/components/StatisticsCard'
+import StatisticsCard from '@/components/statistics-card'
 import './style.scss'
 
 const Home: FC = () => {

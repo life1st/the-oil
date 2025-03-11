@@ -56,12 +56,8 @@ const StatisticsCard: FC = () => {
         </div>
         <div className="statistics-details">
           <div className="statistics-item">
-            <span className="label">加油总花费</span>
-            <span className="value">{statistics.refuelingCost} 元</span>
-          </div>
-          <div className="statistics-item">
-            <span className="label">充电总花费</span>
-            <span className="value">{statistics.chargingCost} 元</span>
+            <span className="label">总花费：<span className="oil">{statistics.refuelingCost}</span> 元 + <span className="charge">{statistics.chargingCost}</span> 元</span>
+            <span className="value">{statistics.refuelingCost + statistics.chargingCost}元</span>
           </div>
           <div className="statistics-item">
             <span className="label">总里程</span>
