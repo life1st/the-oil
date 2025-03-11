@@ -5,6 +5,7 @@ interface RecordState {
   recordList: Record[];
   setRecordData: (data: Record) => void;
   removeRecordById: (id: number) => void;
+  updateRecordById: (id: number, data: Record) => void;
 };
 
 interface Record {
@@ -23,12 +24,19 @@ const useRecordStore = create<RecordState>()(
       recordList: [],
       setRecordData: (data: Record) => set((state) => ({ recordList: [...state.recordList, {
         ...data,
-        id: Date.now()
+        id: data.id || Date.now()
       }] })),
-      removeRecordById: (id: number) => set((state) => {
-        const list = state.recordList.filter(r => r.id !== Number(id))
-        set({recordList: list})
-      })
+      removeRecordById: (id: number) => set((state) => ({
+        recordList: state.recordList.filter(r => r.id !== Number(id))
+      })),
+      updateRecordById: (id: number, data) => set((state) => ({
+        recordList: state.recordList.map(r => {
+          if (r.id === id) {
+            return data
+          }
+          return r
+        })
+      }))
     }),
     {
       name: 'record-store',

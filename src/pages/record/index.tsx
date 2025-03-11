@@ -1,12 +1,12 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
-import { LeftOutline } from 'antd-mobile-icons'
 import { Selector, Input, Button } from 'antd-mobile'
 import CalendarPicker from './calendar-picker'
 import useRecordStore from '@/store/recordStore'
 import type { EnergyType } from '@/utils/types'
-import './style.scss'
+import Navigate from '@/components/navigate'
+import './index.scss'
 
 const Record: FC = () => {
   const navigate = useNavigate()
@@ -17,16 +17,25 @@ const Record: FC = () => {
     electric: number;
     cost: number;
     kilometerOfDisplay: number;
-    date: string;
+    date: Date;
   }>({
     type: 'charging',
     oil: 0,
     electric: 0,
     cost: 0,
     kilometerOfDisplay: 0,
-    date: dayjs(Date.now()).format('YYYY.MM.DD'),
+    date: new Date(Date.now()),
   })
-  const { setRecordData, removeRecordById } = useRecordStore();
+  const { setRecordData, removeRecordById, updateRecordById, recordList } = useRecordStore();
+
+  useEffect(() => {
+    if (params.id) {
+      const record = recordList.find(r => Number(r.id) === Number(params.id))
+      if (record) {
+        setData(record)
+      }
+    }
+  }, [params.id])
 
   const updateItem = (item: any, value: any) => {
     setData({
@@ -39,11 +48,14 @@ const Record: FC = () => {
     removeRecordById(params.id)
     navigate(-1)
   }
-  
+
   const handleSubmit = () => {
-    setRecordData(data)
+    if (params.id) {
+      updateRecordById(Number(params.id), data)
+    } else {
+      setRecordData(data)
+    }
     navigate(-1);
-    console.log(setRecordData, data, 'submit')
   }
 
   const formData = [
@@ -97,12 +109,19 @@ const Record: FC = () => {
 
   return (
     <div className="record-container">
-      <div className="record-header">
-        <button className="back-button" onClick={() => navigate(-1)}>
-          <LeftOutline />
-        </button>
-        <h1>新增记录</h1>
-      </div>
+      <Navigate 
+        title={params.id ? "编辑记录" : "新增记录"}
+        right={params.id && (
+          <Button 
+            fill='none' 
+            onClick={handleDelete}
+            style={{ color: '#ff4d4f' }}
+          >
+            删除
+          </Button>
+        )}
+      />
+      
       <div className="record-content">
         <div className="record-form">
             {formData.map((item) => (
@@ -112,7 +131,7 @@ const Record: FC = () => {
                         { item.dataType === 'select' ? (
                             <Selector
                                 options={item.data.options}
-                                defaultValue={[item.value]}
+                                value={[item.value]}
                                 onChange={(array) => updateItem(item, array[0])}
                             />
                         ) : null }
@@ -127,16 +146,16 @@ const Record: FC = () => {
                             />
                         ) : null }
                         { item.dataType === 'date' ? (
-                            <CalendarPicker onChange={(value) => updateItem(item, value)} />
+                            <CalendarPicker 
+                              onChange={(value) => updateItem(item, value)} 
+                              defaultValue={data.date}
+                            />
                         ) : null }
                         <p className="record-form-item-unit">{item.unit}</p>
                     </div>
                 </div>
             ))}
         </div>
-        {params.id && (
-          <Button onClick={handleDelete}>删除</Button>
-        )}
         <Button type='submit' color='primary' className='record-form-submit' onClick={handleSubmit}>提交</Button>
       </div>
     </div>

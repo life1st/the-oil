@@ -1,5 +1,4 @@
 .record-container {
-  padding: 20px;
   min-height: 100vh;
   box-sizing: border-box;
   display: flex;
@@ -37,10 +36,11 @@
     flex-direction: column;
     flex: 1;
     gap: 8px;
+    padding: 20px;
     .record-form {
         display: flex;
         flex-direction: column;
-        // gap: 10px;
+        gap: 4px;
         flex: 1;
     }
     .record-form-item {
@@ -56,7 +56,11 @@
         }
         .record-form-item-input {
           width: 70%;
+          height: 100%;
           border-bottom: 1px solid #eee;
+          display: flex;
+          align-items: stretch;
+          flex-basis: 70%;
         }
         .record-form-item-unit {
           position: absolute;

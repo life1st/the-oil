@@ -4,6 +4,7 @@ import Skeleton from '@/components/skeleton'
 
 const Home = lazy(() => import('./pages/home'))
 const Record = lazy(() => import('./pages/record'))
+const Preference = lazy(() => import('./pages/preference'))
 
 const router = createBrowserRouter([
   {
@@ -15,7 +16,7 @@ const router = createBrowserRouter([
     )
   },
   {
-    path: '/record/:id',
+    path: '/record/:id?',
     element: (
       <Suspense fallback={<Skeleton loading active rows={4} />}>
         <Record />
@@ -23,13 +24,13 @@ const router = createBrowserRouter([
     )
   },
   {
-    path: '/record',
+    path: '/preference',
     element: (
       <Suspense fallback={<Skeleton loading active rows={4} />}>
-        <Record />
+        <Preference />
       </Suspense>
     )
-  },
+  }
 ], {
   basename: '/the-oil'
 })
