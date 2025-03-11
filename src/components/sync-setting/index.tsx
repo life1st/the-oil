@@ -1,51 +1,124 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { List, Modal, Form, Input, Toast } from 'antd-mobile'
-import webdav from './webdav'
+import useSettingStore, { GistConfig } from '@/store/setting-store'
+import useRecordStore from '@/store/recordStore'
+import gistSync from '@/utils/sync/gist-provider'
 import './style.scss'
-
-interface SyncConfig {
-  url: string;
-  username: string;
-  password: string;
-}
+import dayjs from 'dayjs'
 
 const SyncSetting: FC = () => {
   const [visible, setVisible] = useState(false)
-  const [form] = Form.useForm<SyncConfig>()
+  const [form] = Form.useForm<GistConfig>()
+  const { gistConfig, setGistConfig, syncTime, updateSyncTime } = useSettingStore()
+  const { setRecordData, recordList } = useRecordStore()
+  const { token, gistId, filename } = gistConfig || {}
+
+  useEffect(() => {
+    if (token) {
+      gistSync.setToken(token)
+    }
+  }, [token])
+  const handleSync = async () => {
+    if (!gistConfig) {
+      setVisible(true)
+      return
+    }
+
+    try {
+      Toast.show({
+        icon: 'loading',
+        content: '同步中...',
+        duration: 0
+      })
+
+      const response = await gistSync.get(gistId)
+
+      const recordList = JSON.parse(response.data?.files[filename]?.content || '')
+      if (!recordList) {
+        throw new Error('同步失败')
+      }
+
+      recordList.forEach(r => setRecordData(r))
+      
+      Toast.show({
+        icon: 'success',
+        content: '同步成功'
+      })
+      updateSyncTime()
+    } catch (error) {
+      Toast.show({
+        icon: 'fail',
+        content: '同步失败，请检查配置'
+      })
+    }
+  }
+
+  const handleSyncTo = async () => {
+    try {
+      const recordListJson = JSON.stringify(recordList)
+      const response = await gistSync.update(gistId, {
+        filename, content: recordListJson
+      })
+      if (response.status === 200) {
+        Toast.show({
+          icon: 'success',
+          content: '同步成功'
+        })
+        updateSyncTime()
+      }
+    } catch {
+      Toast.show({
+        icon: 'fail',
+        content: '同步失败，请检查配置'
+      })
+    }
+  }
 
   const handleSubmit = async () => {
-    // try {
-    //   const values = await form.validateFields()
-    //   console.log('同步配置：', values)
-    //   // TODO: 测试连接并保存配置
-    //   Toast.show({
-    //     icon: 'success',
-    //     content: '配置已保存',
-    //   })
-      
-    //   setVisible(false)
-    // } catch (error) {
-    //   Toast.show({
-    //     icon: 'fail',
-    //     content: '请填写完整信息',
-    //   })
-    // }
-    const items = await webdav.client.getDirectoryContents("/")
-    console.log(items)
+    let values = null
+    try {
+      values = await form.validateFields()
+      Toast.show({
+        icon: 'success',
+        content: '配置已保存'
+      })
+      setVisible(false)
+    } catch (error) {
+      Toast.show({
+        icon: 'fail',
+        content: '请填写完整信息'
+      })
+    }
+    if (!values) {
+      return
+    }
+    setGistConfig(values)
   }
 
   return (
     <>
       <List.Item
-        onClick={() => setVisible(true)}
-        arrow
+        onClick={handleSync}
+        extra={gistConfig ? '点击同步' : '未配置'}
+        description={syncTime 
+          ? `上次同步时间: ${dayjs(syncTime).format('YY/MM/DD - HH:mm')}` 
+          : ''
+        }
       >
-        WebDAV 同步
+        {gistConfig ? '从 Gist 同步' : 'Gist 同步'}
       </List.Item>
+      {gistConfig && (
+        <List.Item
+          onClick={handleSyncTo}
+          extra="点击同步"
+        >
+          同步到 Gist
+        </List.Item>
+      )}
 
       <Modal
         visible={visible}
-        title='同步设置'
+        title='Gist 同步设置'
         content={
           <Form
             form={form}
@@ -53,28 +126,25 @@ const SyncSetting: FC = () => {
             className='sync-form'
           >
             <Form.Item
-              label='服务器地址'
-              name='url'
-              rules={[{ required: true, message: '请输入服务器地址' }]}
+              label='Personal Access Token'
+              name='token'
+              rules={[{ required: true, message: '请输入 Token' }]}
             >
-              <Input placeholder='请输入 WebDAV 服务器地址' />
+              <Input placeholder='请输入 GitHub Token' />
             </Form.Item>
             <Form.Item
-              label='用户名'
-              name='username'
-              rules={[{ required: true, message: '请输入用户名' }]}
+              label='文件名'
+              name='filename'
+              rules={[{ required: true, message: '请输入文件名' }]}
             >
-              <Input placeholder='请输入用户名' />
+              <Input placeholder='例如：records.json' />
             </Form.Item>
             <Form.Item
-              label='密码'
-              name='password'
-              rules={[{ required: true, message: '请输入密码' }]}
+              label='Gist ID'
+              name='gistId'
+              rules={[{ required: true, message: '请输入 Gist ID' }]}
             >
-              <Input
-                type='password'
-                placeholder='请输入密码'
-              />
+              <Input placeholder='请输入 Gist ID' />
             </Form.Item>
           </Form>
         }
@@ -83,13 +153,13 @@ const SyncSetting: FC = () => {
         actions={[
           {
             key: 'cancel',
-            text: '取消',
+            text: '取消'
           },
           {
             key: 'confirm',
             text: '确认',
-            primary: true,
-          },
+            primary: true
+          }
         ]}
         onAction={(action) => {
           if (action.key === 'confirm') {
