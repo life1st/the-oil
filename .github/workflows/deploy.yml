@@ -29,7 +29,7 @@ jobs:
           node-version: lts/*
 
       - name: Install step
-        run: "pnpm i"
+        run: "corepack enable pnpm && pnpm i"
 
       - name: Build step
         run: "pnpm build"

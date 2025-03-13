@@ -31,9 +31,7 @@ const router = createBrowserRouter([
       </Suspense>
     )
   }
-], {
-  basename: '/the-oil'
-})
+])
 
 export default function Router() {
   return <RouterProvider router={router} />

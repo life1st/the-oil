@@ -14,5 +14,4 @@ export default defineConfig({
       { find: '@', replacement: '/src' }
     ]
   },
-  base: '/the-oil/'
 })
