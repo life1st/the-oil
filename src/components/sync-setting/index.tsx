@@ -10,7 +10,7 @@ const SyncSetting: FC = () => {
   const [visible, setVisible] = useState(false)
   const [form] = Form.useForm<GistConfig>()
   const { gistConfig, setGistConfig, syncTime, updateSyncTime } = useSettingStore()
-  const { setRecordData, recordList } = useRecordStore()
+  const { mergeRecordData, recordList } = useRecordStore()
   const { token, gistId, filename } = gistConfig || {}
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const SyncSetting: FC = () => {
         throw new Error('同步失败')
       }
 
-      recordList.forEach(r => setRecordData(r))
+      mergeRecordData(recordList)
       
       Toast.show({
         icon: 'success',
