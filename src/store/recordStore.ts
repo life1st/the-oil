@@ -26,6 +26,9 @@ const useRecordStore = create<RecordState>()(
         ...data,
         id: data.id || Date.now()
       }] })),
+      mergeRecordData: (list: Record[]) => set((state) => ({
+        recordList: [...new Map([...state.recordList, ...list].map(item => [item.id, item])).values()]
+      })),
       removeRecordById: (id: number) => set((state) => ({
         recordList: state.recordList.filter(r => r.id !== Number(id))
       })),
