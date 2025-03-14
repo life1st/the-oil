@@ -7,7 +7,7 @@ import './style.scss'
 import dayjs from 'dayjs'
 import { DEFAULT_VEHICLE_ID, DEFAULT_VEHICLE_NAME } from '@/utils/consts'
 import PlateInput from '@/components/plate-input'
-
+import PlateDisplay from '@/components/plate-display'
 
 const withLoading = async (fn: (...args: any) => Promise<boolean> ) => {
   Toast.show({
@@ -192,7 +192,7 @@ const SyncSetting: FC = () => {
             <List.Item key={filename} onClick={() => handleChangeVehicle(filename)}> 
               {filename === DEFAULT_VEHICLE_ID 
               ? DEFAULT_VEHICLE_NAME 
-              : filename}
+              : <PlateDisplay plate={filename} type="new-energy" />}
             </List.Item>
           ))}
           <List.Item>
@@ -222,7 +222,7 @@ const SyncSetting: FC = () => {
         <>
           <List.Item 
             onClick={changeVehicle}
-            extra={vehicleId === DEFAULT_VEHICLE_ID ? '默认车辆' : vehicleId}
+            extra={vehicleId === DEFAULT_VEHICLE_ID ? '默认车辆' : <PlateDisplay plate={vehicleId} size="small" />}
           >
             切换车辆
           </List.Item>
