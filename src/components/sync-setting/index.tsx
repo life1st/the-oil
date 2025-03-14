@@ -1,11 +1,13 @@
 import { FC, useEffect, useState } from 'react'
-import { List, Modal, Form, Input, Toast } from 'antd-mobile'
+import { List, Modal, Form, Input, Toast, Button } from 'antd-mobile'
 import useSettingStore, { GistConfig } from '@/store/setting-store'
 import useRecordStore from '@/store/recordStore'
 import gistSync from '@/utils/sync/gist-provider'
 import './style.scss'
 import dayjs from 'dayjs'
-import { DEFAULT_VEHICLE_ID, DEFAULT_VEHICLE_NAME } from '../../utils/consts'
+import { DEFAULT_VEHICLE_ID, DEFAULT_VEHICLE_NAME } from '@/utils/consts'
+import PlateInput from '@/components/plate-input'
+
 
 const withLoading = async (fn: (...args: any) => Promise<boolean> ) => {
   Toast.show({
@@ -38,7 +40,7 @@ const SyncSetting: FC = () => {
     setVehicleId
   } = useSettingStore()
   const { mergeRecordData, recordList } = useRecordStore()
-  const [files, setFiles] = useState(null)
+  const [files, setFiles] = useState([])
 
   const { token, gistId } = gistConfig || {}
 
@@ -48,11 +50,9 @@ const SyncSetting: FC = () => {
       const files = response.data?.files
       setFiles(files)
     }
-    fetchInit()
-  }, [])
-  useEffect(() => {
     if (token) {
       gistSync.setToken(token)
+      fetchInit()
     }
   }, [token])
 
@@ -108,51 +108,51 @@ const SyncSetting: FC = () => {
     })
   }
 
-  const handleShowSyncModal = async () => {
+  const handleSync = async (id?: string) => {
     if (!gistConfig) {
       showGistConfigModal()
       return
     }
 
-    const handleSync = () => {
-      if (!gistConfig) {
-        showGistConfigModal()
-        return
+    await withLoading(async () => {
+      try {
+        const response = await gistSync.get(gistId)
+        const files = response.data?.files
+        const recordList = JSON.parse(files[id || vehicleId]?.content || '')
+        if (!recordList) {
+          throw new Error('同步失败')
+        }
+
+        mergeRecordData(recordList)
+        updateSyncTime()
+        return true
+      } catch (error) {
+        return false
       }
+    })
+  }
 
-      withLoading(async () => {
-        try {
-          const response = await gistSync.get(gistId)
-          const files = response.data?.files
-          const recordList = JSON.parse(files[vehicleId]?.content || '')
-          if (!recordList) {
-            throw new Error('同步失败')
-          }
-
-          mergeRecordData(recordList)
-          
+  const handleSyncTo = async (id?: string) => {
+    await withLoading(async () => {
+      try {
+        const recordListJson = JSON.stringify(recordList)
+        const response = await gistSync.update(gistId, {
+          filename: id || vehicleId, content: recordListJson
+        })
+        if (response.status === 200) {
           updateSyncTime()
-          return true
-        } catch (error) {
-          return false
         }
-      })
-    }
-    const handleSyncTo = () => {
-      withLoading(async () => {
-        try {
-          const recordListJson = JSON.stringify(recordList)
-          const response = await gistSync.update(gistId, {
-            filename: vehicleId, content: recordListJson
-          })
-          if (response.status === 200) {
-            updateSyncTime()
-          }
-          return response.status === 200
-        } catch {
-          return false
-        }
-      })
+        return response.status === 200
+      } catch {
+        return false
+      }
+    })
+  }
+
+  const handleShowSyncModal = async () => {
+    if (!gistConfig) {
+      showGistConfigModal()
+      return
     }
 
     Modal.alert({
@@ -163,8 +163,8 @@ const SyncSetting: FC = () => {
           {
             gistConfig ? (
               <>
-              <List.Item onClick={handleSync}>从 Gist 下载</List.Item>
-              <List.Item onClick={handleSyncTo}>同步到 Gist</List.Item>
+              <List.Item onClick={() => handleSync()}>从 Gist 下载</List.Item>
+              <List.Item onClick={() => handleSyncTo()}>同步到 Gist</List.Item>
               </>
             ) : null
           }
@@ -174,17 +174,33 @@ const SyncSetting: FC = () => {
   }
 
   const changeVehicle = async () => {
+    const handleAddVehicle = async (plateNum: string) => {
+      setVehicleId(plateNum)
+      await handleSyncTo(plateNum)
+      Modal.clear()
+    }
+    const handleChangeVehicle = async (plateNum: string) => {
+      setVehicleId(plateNum)
+      await handleSync()
+      Modal.clear()
+    }
     Modal.alert({
       title: '切换车辆',
       content: (
         <List>
           {Object.keys(files).map((filename) => (
-            <List.Item key={filename}> 
+            <List.Item key={filename} onClick={() => handleChangeVehicle(filename)}> 
               {filename === DEFAULT_VEHICLE_ID 
               ? DEFAULT_VEHICLE_NAME 
               : filename}
             </List.Item>
           ))}
+          <List.Item>
+            <PlateInput
+              placeholder="请输入车牌号"
+              onSubmit={handleAddVehicle}
+            />
+          </List.Item>
         </List>
       )
     })
