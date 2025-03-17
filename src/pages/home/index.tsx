@@ -1,6 +1,5 @@
 import { FC, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { SetOutline } from 'antd-mobile-icons'
 import ConsumptionItem from '@/components/consumption-item'
 import EnergyRecordItem from '@/components/energy-record-item'
 import FloatButton from '@/components/float-button'
@@ -31,7 +30,6 @@ const Home: FC = () => {
         </div>
       </section>
       <FloatButton onClick={() => navigate('/record')} />
-      <FloatButton icon={<SetOutline/>} onClick={() => navigate('/preference')} position='bottom-left' />
     </div>
   )
 }
