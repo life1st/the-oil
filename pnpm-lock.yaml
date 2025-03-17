@@ -75,6 +75,9 @@ importers:
       vite:
         specifier: ^6.2.0
         version: 6.2.1(sass@1.85.1)
+      vite-bundle-analyzer:
+        specifier: ^0.18.0
+        version: 0.18.0
 
 packages:
 
@@ -1436,6 +1439,10 @@ packages:
     resolution: {integrity: sha512-9WXSPC5fMv61vaupRkCKCxsPxBocVnwakBEkMIHHpkTTg6icbJtg6jzgtLDm4bl3cSHAca52rYWih0k4K3PfHw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
+  vite-bundle-analyzer@0.18.0:
+    resolution: {integrity: sha512-FCVZ7zN3hEdn65QZoV0VpbsbVO3QekfESO1DgFd3algXWqiEIM+DgpdCzCoc5fKKEh3CmUCMbuyIL7HEu7Eiog==}
+    hasBin: true
 
   vite@6.2.1:
     resolution: {integrity: sha512-n2GnqDb6XPhlt9B8olZPrgMD/es/Nd1RdChF6CBD/fHW6pUyUTt2sQW2fPRX5GiD9XEa6+8A6A4f2vT6pSsE7Q==}
@@ -2819,6 +2826,8 @@ snapshots:
   use-sync-external-store@1.4.0(react@18.3.1):
     dependencies:
       react: 18.3.1
+
+  vite-bundle-analyzer@0.18.0: {}
 
   vite@6.2.1(sass@1.85.1):
     dependencies:
