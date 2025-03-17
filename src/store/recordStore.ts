@@ -1,21 +1,22 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware'
+import type { EnergyType } from '@/utils/types'
 
 interface RecordState {
   recordList: Record[];
   setRecordData: (data: Record) => void;
-  removeRecordById: (id: number) => void;
+  removeRecordById: (id: string) => void;
   updateRecordById: (id: number, data: Record) => void;
 };
 
-interface Record {
+export interface Record {
   id: number;
-  type: String,
+  type: EnergyType,
   oil: number,
   electric: number,
   cost: number,
   kilometerOfDisplay: number,
-  date: number; // ts
+  date: number;
 }
 
 const useRecordStore = create<RecordState>()(
@@ -29,7 +30,7 @@ const useRecordStore = create<RecordState>()(
       mergeRecordData: (list: Record[]) => set((state) => ({
         recordList: [...new Map([...state.recordList, ...list].map(item => [item.id, item])).values()]
       })),
-      removeRecordById: (id: number) => set((state) => ({
+      removeRecordById: (id: string) => set((state) => ({
         recordList: state.recordList.filter(r => r.id !== Number(id))
       })),
       updateRecordById: (id: number, data) => set((state) => ({

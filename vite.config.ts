@@ -18,5 +18,8 @@ export default defineConfig({
       { find: '@', replacement: '/src' }
     ]
   },
+  server: {
+    host: '0.0.0.0'
+  },
   base: '/the-oil/'
 })
