@@ -2,12 +2,6 @@ import { FC, useMemo } from 'react';
 import useRecordStore from '@/store/recordStore';
 import './style.scss';
 
-interface Statistics {
-  refuelingCost: number;
-  chargingCost: number;
-  totalKilometers: number;
-}
-
 const StatisticsCard: FC = () => {
   const { recordList } = useRecordStore();
 
@@ -21,7 +15,6 @@ const StatisticsCard: FC = () => {
       ? lastRecord.kilometerOfDisplay
       : 0;
 
-      console.log(lastRecord, 'last')
     // 分别统计加油和充电的总花费
     const { refuelingCost, chargingCost } = recordList.reduce((acc, record) => {
       if (record.type === 'refueling') {

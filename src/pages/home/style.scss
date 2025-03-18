@@ -21,13 +21,3 @@
     flex-direction: column;
   }
 }
-
-@media (prefers-color-scheme: dark) {
-  .home-container {
-    .section {
-      h2 {
-        color: #e6e6e6;
-      }
-    }
-  }
-} 

@@ -57,22 +57,3 @@
     background-position: 0 50%;
   }
 }
-
-// 暗黑模式适配
-@media (prefers-color-scheme: dark) {
-  .skeleton-wrapper {
-    .skeleton-avatar,
-    .skeleton-row {
-      background: #303030;
-    }
-    
-    .skeleton-animation {
-      background: linear-gradient(
-        90deg,
-        #303030 25%,
-        #404040 37%,
-        #303030 63%
-      );
-    }
-  }
-} 

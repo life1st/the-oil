@@ -1,14 +1,17 @@
 import { FC, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { List, Modal, Button, TextArea, Toast } from 'antd-mobile'
+import dayjs from 'dayjs'
 import Navigate from '@/components/navigate'
 import useRecordStore from '@/store/recordStore'
+import useSettingStore from '@/store/setting-store'
 import SyncSetting from '@/components/sync-setting'
 import './style.scss'
 
 const Preference: FC = () => {
     const navi = useNavigate()
     const { recordList, setRecordData } = useRecordStore()
+    const { vehicleId } = useSettingStore()
     const [importVisible, setImportVisible] = useState(false)
     const [importText, setImportText] = useState('')
     
@@ -18,7 +21,7 @@ const Preference: FC = () => {
         const link = document.createElement("a")
         const url = URL.createObjectURL(blob)
         link.href = url
-        link.download = "records.json"
+        link.download = `${vehicleId}_${dayjs().format('YY/MM/DD-HH:mm')}.json`
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)

@@ -1,19 +1,39 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import Skeleton from '@/components/skeleton'
+import Layout from './components/layout'
 
 const Home = lazy(() => import('./pages/home'))
 const Record = lazy(() => import('./pages/record'))
 const Preference = lazy(() => import('./pages/preference'))
+const Chart = lazy(() => import('./pages/chart'))
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: (
-      <Suspense fallback={<Skeleton loading active rows={4} />}>
-        <Home />
-      </Suspense>
-    )
+    element: <Layout />,
+    children: [{
+      path: '/',
+      element: (
+        <Suspense fallback={<Skeleton loading active rows={4} />}>
+          <Home />
+        </Suspense>
+      )
+    }, {
+      path: '/preference',
+      element: (
+        <Suspense fallback={<Skeleton loading active rows={4} />}>
+          <Preference />
+        </Suspense>
+      )
+    }, {
+      path: '/chart',
+      element: (
+        <Suspense fallback={<Skeleton loading active rows={4} />}>
+          <Chart />
+        </Suspense>
+      )
+    }]
   },
   {
     path: '/record/:id?',
@@ -23,14 +43,6 @@ const router = createBrowserRouter([
       </Suspense>
     )
   },
-  {
-    path: '/preference',
-    element: (
-      <Suspense fallback={<Skeleton loading active rows={4} />}>
-        <Preference />
-      </Suspense>
-    )
-  }
 ])
 
 export default function Router() {

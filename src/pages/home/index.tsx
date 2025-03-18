@@ -1,11 +1,9 @@
 import { FC, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { SetOutline } from 'antd-mobile-icons'
 import ConsumptionItem from '@/components/consumption-item'
 import EnergyRecordItem from '@/components/energy-record-item'
 import FloatButton from '@/components/float-button'
 import useRecordStore from '@/store/recordStore'
-import StatisticsCard from '@/components/statistics-card'
 import './style.scss'
 
 const Home: FC = () => {
@@ -18,7 +16,6 @@ const Home: FC = () => {
   ])
   return (
     <div className="home-container">
-      <StatisticsCard />
       <section className="section">
         <h2>补能统计</h2>
         <div className="energy-list">
@@ -31,7 +28,6 @@ const Home: FC = () => {
         </div>
       </section>
       <FloatButton onClick={() => navigate('/record')} />
-      <FloatButton icon={<SetOutline/>} onClick={() => navigate('/preference')} position='bottom-left' />
     </div>
   )
 }

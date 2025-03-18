@@ -1,30 +1,23 @@
 import { FC, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import dayjs from 'dayjs'
 import { Selector, Input, Button } from 'antd-mobile'
+import cls from 'classnames'
 import CalendarPicker from './calendar-picker'
-import useRecordStore from '@/store/recordStore'
-import type { EnergyType } from '@/utils/types'
+import useRecordStore, { Record as IRecord } from '@/store/recordStore'
 import Navigate from '@/components/navigate'
 import './index.scss'
 
 const Record: FC = () => {
   const navigate = useNavigate()
   const params = useParams()
-  const [data, setData] = useState<{
-    type: EnergyType;
-    oil: number;
-    electric: number;
-    cost: number;
-    kilometerOfDisplay: number;
-    date: Date;
-  }>({
+  const [data, setData] = useState<IRecord>({
+    id: 0,
     type: 'charging',
     oil: 0,
     electric: 0,
     cost: 0,
     kilometerOfDisplay: 0,
-    date: new Date(Date.now()),
+    date: Date.now(),
   })
   const { setRecordData, removeRecordById, updateRecordById, recordList } = useRecordStore();
 
@@ -45,8 +38,10 @@ const Record: FC = () => {
   }
 
   const handleDelete = () => {
-    removeRecordById(params.id)
-    navigate(-1)
+    if (params.id) {
+      removeRecordById(params.id)
+      navigate(-1)
+    }
   }
 
   const handleSubmit = () => {
@@ -105,7 +100,7 @@ const Record: FC = () => {
       value: data.date,
       dataType: 'date',
     }
-  ].filter(Boolean);
+  ].filter(item =>  !!item);
 
   return (
     <div className="record-container">
@@ -121,7 +116,7 @@ const Record: FC = () => {
           </Button>
         )}
       />
-      
+      <div className={cls("type-line", data.type)} />
       <div className="record-content">
         <div className="record-form">
             {formData.map((item) => (
@@ -130,8 +125,8 @@ const Record: FC = () => {
                     <div className="record-form-item-input">
                         { item.dataType === 'select' ? (
                             <Selector
-                                options={item.data.options}
-                                value={[item.value]}
+                                options={item.data!.options}
+                                value={[item.value as string]}
                                 onChange={(array) => updateItem(item, array[0])}
                             />
                         ) : null }

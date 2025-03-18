@@ -16,7 +16,6 @@
   z-index: 1000;
 
   &:hover {
-    // background-color: color.adjust($primary-color, $lightness: 10%);
     transform: translateY(-2px);
   }
 
@@ -41,7 +40,7 @@
   }
 
   &.bottom-right {
-    bottom: 24px;
+    bottom: 72px;
     right: 24px;
   }
 
