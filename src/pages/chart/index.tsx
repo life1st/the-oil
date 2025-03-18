@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import F2 from '@antv/f2'
 import dayjs from 'dayjs'
 import useRecordStore, { type Record } from '@/store/recordStore'
+import StatisticsCard from '@/components/statistics-card'
 import './style.scss'
 
 const BasicChart = ({ recordList, width }:{
@@ -51,7 +52,7 @@ const BasicChart = ({ recordList, width }:{
     chart.tooltip({
       custom: true, // 自定义 tooltip 内容框
       onChange: function onChange(obj) {
-        const legend = chart.get('legendController').legends.top[0];
+        const legend = chart.get('legendController').legends.top![0];
         const tooltipItems = obj.items;
         const legendItems = legend.items;
         const map = new Map();
@@ -68,8 +69,8 @@ const BasicChart = ({ recordList, width }:{
         legend.setItems(Array.from(map.values()));
       },
       onHide: function onHide() {
-        const legend = chart.get('legendController').legends.top[0];
-        legend.setItems(chart.getLegendItems().type);
+        const legend = chart.get('legendController').legends.top![0];
+        legend.setItems(chart.getLegendItems().type || []);
       }
     });
     chart.line().position('date*value').color('type')
@@ -100,17 +101,16 @@ const CostPer100KMChart = ({ recordList, width }: {
       value: number;
     }[] = []
     let costCount = 0
-    console.log(recordList)
     recordList.forEach(({ kilometerOfDisplay, cost }) => {
       costCount += Number(cost)
       if (kilometerOfDisplay >= result.length * 100) {
         result.push({
           range: result.length * 100,
-          value: Number((costCount / kilometerOfDisplay).toFixed(2)),
+          value: Number((costCount / kilometerOfDisplay * 100).toFixed(2)),
         })
       }
     })
-    return result
+    return result.filter(r => r.value < 100)
   }, [recordList])
   
   const renderChart = () => {
@@ -119,13 +119,14 @@ const CostPer100KMChart = ({ recordList, width }: {
       pixelRatio: window.devicePixelRatio // 指定分辨率
     })
     chart.source(data, {
-      cost: {
+      range: {
         tickCount: 5,
-        // min: 0
       },
+      value: {
+        alias: '平均花费'
+      }
     });
-    console.log(data)
-    chart.line().position('range*value')
+    chart.line().position('range*value').shape('smooth')
 
     chart.render();
   }
@@ -150,7 +151,7 @@ const ChartPage = () => {
   useEffect(() => {
     const updateWidth = () => {
       const rect = chartRef.current!.getBoundingClientRect()
-      setWidth(rect.width - 48)
+      setWidth(rect.width - 32)
     }
     if (chartRef.current) {
       updateWidth()
@@ -162,10 +163,12 @@ const ChartPage = () => {
   }, [chartRef])
   return (
     <div className='chart-page'>
+      <StatisticsCard />
       <div className='content' ref={chartRef}>
         <BasicChart recordList={recordList} width={width} />
+        <p className='chart-legend'>充电记录</p>
         <CostPer100KMChart recordList={recordList} width={width} />
-        <div className='placeholder'>图表开发中...</div>
+        <p className='chart-legend'>每百公里平均费用</p>
       </div>
     </div>
   )

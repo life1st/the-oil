@@ -5,6 +5,7 @@ import type { EnergyType } from '@/utils/types'
 interface RecordState {
   recordList: Record[];
   setRecordData: (data: Record) => void;
+  mergeRecordData: (list: Record[]) => void;
   removeRecordById: (id: string) => void;
   updateRecordById: (id: number, data: Record) => void;
 };
