@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { RouterProvider, createHashRouter } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import Skeleton from '@/components/skeleton'
 import Layout from './components/layout'
@@ -8,7 +8,7 @@ const Record = lazy(() => import('./pages/record'))
 const Preference = lazy(() => import('./pages/preference'))
 const Chart = lazy(() => import('./pages/chart'))
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '/',
     element: <Layout />,
@@ -43,9 +43,7 @@ const router = createBrowserRouter([
       </Suspense>
     )
   },
-], {
-  basename: '/fuel/'
-})
+])
 
 export default function Router() {
   return <RouterProvider router={router} />
