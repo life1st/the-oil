@@ -2,7 +2,8 @@
   width: 100%;
   min-height: 100vh;
   background: #f5f5f5;
-  padding: 24px 0 60px;
+  padding: calc(24px + var(--safe-area-top)) 0 60px;
+  user-select: none;
 
   .content {
     padding: 0 18px;
