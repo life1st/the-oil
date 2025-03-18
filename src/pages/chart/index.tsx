@@ -84,7 +84,7 @@ const BasicChart = ({ recordList, width }:{
   }, [width])
 
   return (
-    <div className='basic-chart'>
+    <div className='basic-chart chart-container'>
       <canvas id={chartId.current} width={width || 100} height="260"></canvas>
     </div>
   )
@@ -137,7 +137,7 @@ const CostPer100KMChart = ({ recordList, width }: {
   }, [width])
 
   return (
-    <div className="per-cost-chart">
+    <div className="per-cost-chart chart-container">
       <canvas id={chartId} width={width || 100} height="260"></canvas>
     </div>
   )

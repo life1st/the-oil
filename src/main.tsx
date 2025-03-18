@@ -19,3 +19,7 @@ createRoot(document.getElementById('root')!).render(
     <Router />
   </StrictMode>,
 )
+
+// default safearea variable
+document.documentElement.style.setProperty('--safe-area-top', '0px');
+document.documentElement.style.setProperty('--safe-area-bottom', '0px');
