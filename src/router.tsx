@@ -44,7 +44,7 @@ const router = createBrowserRouter([
     )
   },
 ], {
-  basename: '/the-oil'
+  basename: '/fuel/'
 })
 
 export default function Router() {
