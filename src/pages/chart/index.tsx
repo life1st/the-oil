@@ -3,9 +3,10 @@ import F2, { LegendItem } from "@antv/f2";
 import dayjs from 'dayjs'
 import useRecordStore, { type Record } from '@/store/recordStore'
 import StatisticsCard from '@/components/statistics-card'
+import demoData from '@/utils/demoData.json'
 import './style.scss'
 
-const BasicChart = ({
+const ChargingChart = ({
   recordList,
   width,
 }: {
@@ -13,6 +14,7 @@ const BasicChart = ({
   width: number;
 }) => {
   const chartId = useRef(String(Date.now()));
+  const [isDark, setDark] = useState(false);
 
   const chargingData = useMemo(() => {
     const result: {
@@ -171,13 +173,15 @@ const ChartPage = () => {
       window.removeEventListener('resize', updateWidth)
     }
   }, [chartRef])
+  const chartData = recordList.length ? recordList : demoData as Record[]
   return (
     <div className='chart-page'>
+      { !recordList.length && <div className='demo-data-tip'>DEMO MODE</div> }
       <StatisticsCard />
       <div className='content' ref={chartRef}>
-        <BasicChart recordList={recordList} width={width} />
+        <ChargingChart recordList={chartData} width={width} />
         <p className='chart-legend'>充电记录</p>
-        <CostPer100KMChart recordList={recordList} width={width} />
+        <CostPer100KMChart recordList={chartData} width={width} />
         <p className='chart-legend'>每百公里平均费用</p>
       </div>
     </div>

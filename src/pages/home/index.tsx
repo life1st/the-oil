@@ -4,7 +4,7 @@ import ConsumptionItem from '@/components/consumption-item'
 import EnergyRecordItem from '@/components/energy-record-item'
 import FloatButton from '@/components/float-button'
 import useRecordStore from '@/store/recordStore'
-import demoDeta from './data.json'
+import demoDeta from '@/utils/demoData.json'
 import './style.scss'
 
 const Home: FC = () => {
