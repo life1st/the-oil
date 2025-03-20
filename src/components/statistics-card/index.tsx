@@ -11,7 +11,7 @@ const StatisticsCard: FC = () => {
     const lastRecord = sortedRecords[sortedRecords.length - 1];
     
     // 计算总里程
-    const totalKilometers = lastRecord.kilometerOfDisplay;
+    const totalKilometers = lastRecord?.kilometerOfDisplay ?? 0;
 
     // 分别统计加油和充电的总花费
     const { refuelingCost, chargingCost } = recordList.reduce((acc, record) => {
