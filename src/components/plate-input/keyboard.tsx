@@ -43,7 +43,7 @@ const Keyboard: FC<KeyboardProps> = ({
             <button
               key={province}
               className="plate-keyboard-key"
-              onClick={() => onKeyPress(province)}
+              onClick={() => { onKeyPress(province); }}
             >
               {province}
             </button>
@@ -57,7 +57,7 @@ const Keyboard: FC<KeyboardProps> = ({
             <button
               key={letter}
               className="plate-keyboard-key"
-              onClick={() => onKeyPress(letter)}
+              onClick={() => { onKeyPress(letter); }}
             >
               {letter}
             </button>
@@ -72,7 +72,7 @@ const Keyboard: FC<KeyboardProps> = ({
               <button
                 key={letter}
                 className="plate-keyboard-key"
-                onClick={() => onKeyPress(letter)}
+                onClick={() => { onKeyPress(letter); }}
               >
                 {letter}
               </button>
@@ -83,7 +83,7 @@ const Keyboard: FC<KeyboardProps> = ({
               <button
                 key={number}
                 className="plate-keyboard-key"
-                onClick={() => onKeyPress(number)}
+                onClick={() => { onKeyPress(number); }}
               >
                 {number}
               </button>

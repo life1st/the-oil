@@ -20,16 +20,36 @@ const Home: FC = () => {
         <h2>补能统计</h2>
         <div className="energy-list">
           {data.map(({ type, data }, index) => {
-            if (type === 'consumption') {
-              return <ConsumptionItem key={index} {...data} onClick={() => console.log('consumption clicked:', data)} />
+            if (type === "consumption") {
+              return (
+                <ConsumptionItem
+                  key={index}
+                  {...data}
+                  onClick={() => {
+                    console.log("consumption clicked:", data);
+                  }}
+                />
+              );
             }
-            return <EnergyRecordItem key={index} {...data} onClick={() => console.log('energy clicked:', data)} />
+            return (
+              <EnergyRecordItem
+                key={index}
+                {...data}
+                onClick={() => {
+                  console.log("energy clicked:", data);
+                }}
+              />
+            );
           })}
         </div>
       </section>
-      <FloatButton onClick={() => navigate('/record')} />
+      <FloatButton
+        onClick={() => {
+          void navigate("/record");
+        }}
+      />
     </div>
-  )
+  );
 }
 
 export default Home 

@@ -21,13 +21,15 @@ const TabBar = () => {
         return (
           <div
             key={tab.path}
-            className={`tab-item ${isActive ? 'active' : ''}`}
-            onClick={() => navigate(tab.path)}
+            className={`tab-item ${isActive ? "active" : ""}`}
+            onClick={() => {
+              void navigate(tab.path);
+            }}
           >
             <Icon size={24} />
-            <div className='label'>{tab.label}</div>
+            <div className="label">{tab.label}</div>
           </div>
-        )
+        );
       })}
     </div>
   )

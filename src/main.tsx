@@ -12,7 +12,7 @@ const darkMode = async () => {
   })
 }
 
-darkMode()
+void darkMode();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
