@@ -17,7 +17,7 @@
     justify-content: center;
     flex: 1;
     height: 100%;
-    color: #999999;
+    color: #666666;
     transition: all 0.3s ease;
     cursor: pointer;
 
@@ -27,11 +27,13 @@
 
     &.active {
       color: #2B5AAA;
+      font-weight: 500;
     }
 
     .label {
       font-size: 12px;
       margin-top: 4px;
+      font-weight: 500;
     }
   }
 } 

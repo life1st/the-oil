@@ -4,20 +4,23 @@ import ConsumptionItem from '@/components/consumption-item'
 import EnergyRecordItem from '@/components/energy-record-item'
 import FloatButton from '@/components/float-button'
 import useRecordStore from '@/store/recordStore'
+import demoDeta from './data.json'
 import './style.scss'
 
 const Home: FC = () => {
   const { recordList } = useRecordStore()
   const navigate = useNavigate()
+  const hasData = recordList?.length > 0
   const data = useMemo(() => {
-    return recordList.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((data) => ({ type: 'energy', data }))
+    const source = hasData ? recordList : demoDeta
+    return source.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((data) => ({ type: 'energy', data }))
   }, [
     recordList,
   ])
   return (
     <div className="home-container">
       <section className="section">
-        <h2>补能统计</h2>
+        <h2>补能统计{!hasData && '(DEMO MODE)'}</h2>
         <div className="energy-list">
           {data.map(({ type, data }, index) => {
             if (type === "consumption") {
