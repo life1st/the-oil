@@ -17,7 +17,7 @@ class GistProvider {
         filename: string;
         content: string;
     }) {
-        if (!params || !this.token || !id) {
+        if (!this.token || !id) {
             return null
         }
 
