@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { List, Modal, Form, Input, Toast } from "antd-mobile";
+import { QuestionCircleOutline } from "antd-mobile-icons";
 import useSettingStore, { GistConfig } from "@/store/setting-store";
 import useRecordStore, { type Record } from "@/store/recordStore";
 import gistSync from "@/utils/sync/gist-provider";
@@ -89,7 +90,17 @@ const SyncSetting: FC = () => {
           className="sync-form"
         >
           <Form.Item
-            label="Personal Access Token"
+            label={
+              <>
+                Personal Access Token
+                <a
+                  target="_blank"
+                  href="https://docs.github.com/zh/enterprise-cloud@latest/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#%E5%88%9B%E5%BB%BA-fine-grained-personal-access-token"
+                >
+                  <QuestionCircleOutline />
+                </a>
+              </>
+            }
             name="token"
             rules={[{ required: true, message: "请输入 Token" }]}
           >
