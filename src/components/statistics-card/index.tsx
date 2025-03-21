@@ -37,6 +37,8 @@ const StatisticsCard: FC = () => {
     return (totalCost / statistics.totalKilometers) * 100;
   }, [statistics]);
 
+  const { refuelingCost, chargingCost } = statistics
+
   return (
     <div className="statistics-card">
       <h3 className="statistics-title">能源消耗统计</h3>
@@ -47,8 +49,12 @@ const StatisticsCard: FC = () => {
         </div>
         <div className="statistics-details">
           <div className="statistics-item">
-            <span className="label">总花费：<span className="oil">{statistics.refuelingCost}</span> 元 + <span className="charge">{statistics.chargingCost}</span> 元</span>
-            <span className="value">{statistics.refuelingCost + statistics.chargingCost}元</span>
+            <span className="label">
+              总花费：
+              <span className="oil">{refuelingCost.toFixed(2)}</span> 元 + 
+              <span className="charge">{chargingCost.toFixed(2)}</span> 元
+            </span>
+            <span className="value">{(refuelingCost + chargingCost).toFixed(2)}元</span>
           </div>
           <div className="statistics-item">
             <span className="label">总里程</span>

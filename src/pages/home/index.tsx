@@ -2,7 +2,6 @@ import { FC, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ConsumptionItem from '@/components/consumption-item'
 import EnergyRecordItem from '@/components/energy-record-item'
-import FloatButton from '@/components/float-button'
 import useRecordStore from '@/store/recordStore'
 import demoDeta from '@/utils/demoData.json'
 import './style.scss'
@@ -46,11 +45,6 @@ const Home: FC = () => {
           })}
         </div>
       </section>
-      <FloatButton
-        onClick={() => {
-          void navigate("/record");
-        }}
-      />
     </div>
   );
 }

@@ -34,8 +34,8 @@ const ChargingChart = ({
           },
           {
             date,
-            value: Number((r.cost / r.electric).toFixed(2)),
-            type: "单价",
+            value: Number(((r.cost / r.electric) * 10).toFixed(2)),
+            type: "价格*10",
           },
           {
             date,
@@ -116,10 +116,14 @@ const CostPer100KMChart = ({
     recordList.forEach(({ kilometerOfDisplay, cost }) => {
       costCount += Number(cost);
       if (kilometerOfDisplay >= result.length * 100) {
-        result.push({
-          range: result.length * 100,
-          value: Number(((costCount / kilometerOfDisplay) * 100).toFixed(2)),
-        });
+        const value = Number(((costCount / kilometerOfDisplay) * 100).toFixed(2))
+        const lens = Math.floor((kilometerOfDisplay - result.length * 100)/100)
+        for (let i = 0; i < lens; i++) {
+          result.push({
+            range: result.length * 100,
+            value,
+          });
+        }
       }
     });
     return result.filter((r) => r.value < 100);
