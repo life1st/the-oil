@@ -3,7 +3,9 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 60px;
+  min-height: 60px;
+  padding-bottom: constant(safe-area-inset-bottom); /* 兼容 iOS < 11.2 */
+  padding-bottom: env(safe-area-inset-bottom);
   background: #ffffff;
   display: flex;
   justify-content: space-around;
@@ -20,10 +22,6 @@
     color: #666666;
     transition: all 0.3s ease;
     cursor: pointer;
-
-    &:hover {
-      color: #2B5AAA;
-    }
 
     &.active {
       color: #2B5AAA;
