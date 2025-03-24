@@ -14,6 +14,14 @@
 - 🌙 支持深色模式
 - 🔄 数据同步到 Gist
 
+## 应用截图
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: center;">
+  <img src="./docs/assets/home.png" alt="首页" width="200" />
+  <img src="./docs/assets/chart.png" alt="图表" width="200" />
+  <img src="./docs/assets/settings.png" alt="设置" width="200" />
+</div>
+
 ## 快速开始
 
 ### 在线体验
