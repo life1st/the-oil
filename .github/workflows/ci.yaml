@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - feat/ci
 
 jobs:
   test:
@@ -24,12 +24,14 @@ jobs:
       - name: Run tests
         run: pnpm test:coverage
 
+      - name: Check coverage report
+        run: ls -l # 列出 coverage 目录中的文件
+
       - name: Upload coverage report
         uses: actions/download-artifact@v4
         with:
           name: coverage-report
-          path: coverage/
-
+          path: ./coverage
       - name: Generate coverage summary
         id: coverage_summary
         run: |
