@@ -18,7 +18,7 @@
 
 ### 在线体验
 
-[在线演示地址](https://life1st.github.io/fuel/)
+[在线演示地址](https://fuel.deno.dev/)
 
 ### 本地安装
 
