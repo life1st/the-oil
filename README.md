@@ -16,7 +16,7 @@
 
 ## 应用截图
 
-<div style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: center;">
+<div style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; align-items: center;">
   <img src="./docs/assets/home.png" alt="首页" width="200" />
   <img src="./docs/assets/chart.png" alt="图表" width="200" />
   <img src="./docs/assets/settings.png" alt="设置" width="200" />
