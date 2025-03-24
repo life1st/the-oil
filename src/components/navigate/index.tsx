@@ -20,7 +20,7 @@ const Navigate: FC<NavigateProps> = ({
     if (onBack) {
       onBack()
     } else {
-      navigate(-1)
+      void navigate(-1);
     }
   }
 
